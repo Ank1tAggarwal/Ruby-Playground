@@ -25,26 +25,23 @@ loop do
     
     guess = gets.chomp
     if guess == "clue"
-      # Create a copy of computers_number, because otherwise, computers_number will actually be changed
-      computers_numbercopy = computers_number
-      clue = computers_numbercopy.to_s.split("").to_a.last # massive chaining awesomeness!
+      # Can retrieve the clue in multiple ways. Here are a couple:
+      # computers_number.to_s.split("").to_a.last
+      # computers_number.to_s[-1]
+      clue = computers_number % 10      
       puts "Here's a clue. The number I'm thinking of ends with the following digit: #{clue}."
     else 
       guess = guess.to_i
-      if guess < computers_number
-        puts "Your guess was too low! Try again!"
-      elsif guess > computers_number
-        puts "Your guess was too high! Try again!"
-      elsif guess == computers_number
+      puts "Your guess was too low! Try again!" if guess < computers_number
+      puts "Your guess was too high! Try again!" if guess > computers_number
+      if guess == computers_number
         elapsed = Time.now - start
         puts "You got the number right! It was #{computers_number}. It took you #{elapsed} seconds to figure it out."
         break
       end
     end
     
-    if number == MAX_GUESS
-      puts "Sorry, that was the maximum number of guesses!"
-    end
+    puts "Sorry, that was the maximum number of guesses!" if number == MAX_GUESS
 
   end # End the game
   
@@ -55,16 +52,11 @@ loop do
   # Keep asking the user until you recognize the proper response
   loop do
     answer = gets.chomp # Must make sure to 'chomp' the result, otherwise we won't get an exact match to 'Y' or 'N'
-    if answer == "N" || answer == "Y"
-      break
-    else
-      puts "Sorry, but did not recognize your response. Please type \"Y\" or \"N\"."
-    end
+    break if answer == "N" || answer == "Y"
+    puts "Sorry, but did not recognize your response. Please type \"Y\" or \"N\"."
   end
 
   # If the user's answer is "N" then break out of the bigger loop and exit. Otherwise, the loop will run the game again.
-  if answer == "N"
-    break
-  end
+  break if answer == "N"
   
 end
